@@ -85,6 +85,34 @@ const GESTURE_INFO = {
 
 // ─── Camera Acquisition (Multi-Tier Resilient Fallback) ─────────────────────
 async function initCamera(screenSize) {
+    const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                     (window.innerWidth < 800 && window.innerHeight > window.innerWidth);
+
+    // Mobile: Try front-facing camera in portrait orientation
+    if (isMobile) {
+        try {
+            console.log('[Camera] Mobile: Requesting front selfie camera...');
+            return await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: 'user',
+                    width:     { ideal: 720 },
+                    height:    { ideal: 1280 }
+                },
+                audio: false
+            });
+        } catch (mErr1) {
+            console.warn('[Camera] Mobile ideal front cam failed, trying generic facingMode user:', mErr1);
+            try {
+                return await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user' },
+                    audio: false
+                });
+            } catch (mErr2) {
+                console.warn('[Camera] Mobile user camera fallback failed:', mErr2);
+            }
+        }
+    }
+
     // Tier 1: Soft ideal constraints (no facingMode, no min frameRate constraint)
     try {
         console.log('[Camera] Tier 1: Requesting ideal 1280x720 60fps...');
@@ -794,6 +822,72 @@ document.addEventListener('keydown', e => {
         debugMode = !debugMode;
         btnDebug.classList.toggle('active', debugMode);
         fpsCounter.classList.toggle('hidden', !debugMode);
+    }
+});
+
+// ─── Direct Touchscreen & Mouse Wiping ──────────────────────────────────────
+let isDirectWiping = false;
+
+function wipeScreenAt(clientX, clientY) {
+    sfx?.resumeAudioContext?.();
+    const rect = mainCanvas.getBoundingClientRect();
+    const nx = (clientX - rect.left) / rect.width;
+    const ny = (clientY - rect.top) / rect.height;
+
+    if (nx >= 0 && nx <= 1 && ny >= 0 && ny <= 1) {
+        const normX = 1 - nx;
+        const canvasX = nx * CAM_W;
+        const canvasY = ny * CAM_H;
+
+        fog.wipeAt(normX, ny, 65);
+        droplets.wipeAt(canvasX, canvasY, 65);
+        sfx.playWipe(1.3);
+    }
+}
+
+// Touch events for mobile phones & tablets
+window.addEventListener('touchstart', e => {
+    sfx?.resumeAudioContext?.();
+    resetHudTimer();
+    if (e.target.closest('#controls') || e.target.closest('#errorOverlay')) return;
+    isDirectWiping = true;
+    const t = e.touches[0];
+    wipeScreenAt(t.clientX, t.clientY);
+}, { passive: true });
+
+window.addEventListener('touchmove', e => {
+    if (!isDirectWiping) return;
+    const t = e.touches[0];
+    wipeScreenAt(t.clientX, t.clientY);
+}, { passive: true });
+
+window.addEventListener('touchend', () => {
+    if (isDirectWiping) {
+        isDirectWiping = false;
+        fog.resetPointer();
+    }
+}, { passive: true });
+
+// Mouse drag fallback on desktop
+window.addEventListener('mousedown', e => {
+    sfx?.resumeAudioContext?.();
+    if (e.target.closest('#controls') || e.target.closest('#errorOverlay')) return;
+    if (e.button === 0) {
+        isDirectWiping = true;
+        wipeScreenAt(e.clientX, e.clientY);
+    }
+});
+
+window.addEventListener('mousemove', e => {
+    if (isDirectWiping) {
+        wipeScreenAt(e.clientX, e.clientY);
+    }
+});
+
+window.addEventListener('mouseup', () => {
+    if (isDirectWiping) {
+        isDirectWiping = false;
+        fog.resetPointer();
     }
 });
 

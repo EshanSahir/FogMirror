@@ -17,6 +17,8 @@ html, body {
     background: #0f172a;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     color: #f8fafc;
+    touch-action: none;
+    -webkit-touch-callout: none;
 }
 
 /* ── Loading Screen ── */
@@ -265,3 +267,39 @@ html, body {
 }
 
 .hidden { display: none !important; }
+
+/* ── Mobile & Responsive Tweaks ── */
+@media (max-width: 768px) {
+    #gestureIndicator {
+        top: max(16px, env(safe-area-inset-top, 16px));
+        font-size: 0.8rem;
+        padding: 6px 14px;
+        max-width: 90vw;
+    }
+    #controls {
+        bottom: max(20px, env(safe-area-inset-bottom, 20px));
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 95vw;
+    }
+    .ctrl-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+        min-height: 40px;
+    }
+    #fpsCounter {
+        top: max(16px, env(safe-area-inset-top, 16px));
+        right: 12px;
+    }
+    #quitHint {
+        display: none;
+    }
+    .loader-title {
+        font-size: 1.5rem;
+    }
+    .error-box {
+        margin: 20px;
+        padding: 24px;
+    }
+}
