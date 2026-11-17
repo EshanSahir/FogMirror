@@ -5,6 +5,8 @@
 **Turn your webcam into an interactive steamed-up bathroom mirror.**  
 Wipe the glass with your hands, sketch in the condensation, or breathe onto the screen to fog it up.
 
+[![Download for Windows](https://img.shields.io/badge/Download%20for%20Windows-v1.0.0-success?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/EshanSahir/FogMirror/releases/latest)
+
 [![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white)](#)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](#)
 [![Vision](https://img.shields.io/badge/AI-MediaPipe-FF6F00?logo=google&logoColor=white)](#)
@@ -59,15 +61,18 @@ Wipe the glass with your hands, sketch in the condensation, or breathe onto the 
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Download & Install
 
-### Option 1: Standalone Windows App (.exe)
-Download or run the packaged executable:
-```powershell
-.\dist\FogMirror\FogMirror.exe
-```
+### For Windows Users (No Setup / Python Required)
+1. **Download**: Grab **[FogMirror-v1.0.0-windows-x64.zip](https://github.com/EshanSahir/FogMirror/releases/latest/download/FogMirror-v1.0.0-windows-x64.zip)** from the **[Releases Page](https://github.com/EshanSahir/FogMirror/releases/latest)**.
+2. **Extract**: Unzip the archive anywhere on your PC.
+3. **Run**:
+   - Double-click **`FogMirror.exe`** to launch portable mode immediately.
+   - *Optional*: Double-click **`Install-FogMirror.bat`** to create clean Desktop and Start Menu shortcuts.
 
-### Option 2: Run from Source
+---
+
+### For Developers (Run from Source)
 
 **Requirements**: Python 3.10+ on Windows.
 
@@ -79,7 +84,7 @@ Download or run the packaged executable:
 
 2. Install dependencies:
    ```bash
-   pip install pywebview
+   pip install -r requirements.txt
    ```
 
 3. Launch:

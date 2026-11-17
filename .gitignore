@@ -13,6 +13,8 @@ node_modules/
 
 # Redundant temporary / archive files
 test.zip
+*.zip
+release_notes.md
 /models/
 test_*.py
 test_*.html

@@ -1,0 +1,2 @@
+# FogMirror Runtime Dependencies
+pywebview>=5.0.0
