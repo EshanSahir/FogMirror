@@ -5,9 +5,10 @@
 **Turn your webcam into an interactive steamed-up bathroom mirror.**  
 Wipe the glass with your hands, sketch in the condensation, or breathe onto the screen to fog it up.
 
+[![Live Web App](https://img.shields.io/badge/Live%20Web%20App-Try%20on%20Phone%20%26%20Browser-6366f1?style=for-the-badge&logo=googlechrome&logoColor=white)](https://eshansahir.github.io/FogMirror/)
 [![Download for Windows](https://img.shields.io/badge/Download%20for%20Windows-v1.0.0-success?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/EshanSahir/FogMirror/releases/latest)
 
-[![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows&logoColor=white)](#)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20iOS%20%7C%20Android-0078D6)](#)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](#)
 [![Vision](https://img.shields.io/badge/AI-MediaPipe-FF6F00?logo=google&logoColor=white)](#)
 [![Audio](https://img.shields.io/badge/Audio-Pure%20Web%20Audio-10B981)](#)
@@ -61,9 +62,20 @@ Wipe the glass with your hands, sketch in the condensation, or breathe onto the 
 
 ---
 
-## 🚀 Quick Download & Install
+## 🚀 How to Use & Install
 
-### For Windows Users (No Setup / Python Required)
+### 📱 Option 1: Instant Mobile & Web App (iPhone, Android, Mac, PC)
+No installation needed! Open the live web app directly in Safari, Chrome, or any modern browser:
+👉 **[eshansahir.github.io/FogMirror](https://eshansahir.github.io/FogMirror/)**
+
+- **Mobile Touch**: Swipe or write on the foggy mirror with your fingers.
+- **Front Camera**: Look into your front selfie camera and breathe warmly ("haaaa") to fog up the glass!
+- **Hand Gestures**: Hold your hand up to the camera to wipe, stamp hearts, or clear with a fist.
+- *Tip*: On iOS Safari or Chrome Android, tap **"Add to Home Screen"** to run it as a fullscreen app!
+
+---
+
+### 💻 Option 2: Standalone Windows App (.exe)
 1. **Download**: Grab **[FogMirror-v1.0.0-windows-x64.zip](https://github.com/EshanSahir/FogMirror/releases/latest/download/FogMirror-v1.0.0-windows-x64.zip)** from the **[Releases Page](https://github.com/EshanSahir/FogMirror/releases/latest)**.
 2. **Extract**: Unzip the archive anywhere on your PC.
 3. **Run**:
@@ -72,7 +84,7 @@ Wipe the glass with your hands, sketch in the condensation, or breathe onto the 
 
 ---
 
-### For Developers (Run from Source)
+### 🧑‍💻 Option 3: For Developers (Run from Source)
 
 **Requirements**: Python 3.10+ on Windows.
 

@@ -43,6 +43,13 @@ export class FogMirrorAudio {
         }
     }
 
+    resumeAudioContext() {
+        this._init();
+        if (this.ctx && this.ctx.state === 'suspended') {
+            this.ctx.resume().catch(() => {});
+        }
+    }
+
     startAmbient() {
         // Soft ambient room tone (optional, keep ready)
     }
