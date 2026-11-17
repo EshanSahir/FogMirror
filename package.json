@@ -1,0 +1,51 @@
+{
+  "name": "fogmirror",
+  "version": "1.0.0",
+  "description": "Gesture-controlled fog mirror desktop app",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "postinstall": "electron-builder install-app-deps",
+    "build": "electron-builder --win",
+    "build:portable": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.fogmirror.app",
+    "productName": "FogMirror",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "extraResources": [
+      {
+        "from": "models/",
+        "to": "models",
+        "filter": ["**/*"]
+      }
+    ],
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "asar": true
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "^0.10.18"
+  }
+}

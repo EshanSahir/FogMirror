@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.spec.bak
+
+# PyInstaller build artifacts
+build/
+dist/
+
+# Node / JS dependencies
+node_modules/
+
+# Redundant temporary / archive files
+test.zip
+models/
+test_*.py
+test_*.html
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

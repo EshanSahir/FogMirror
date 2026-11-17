@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FogMirror</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        window.addEventListener('error', (e) => {
+            console.error('Global Error caught:', e);
+            const overlay = document.getElementById('errorOverlay');
+            const title = document.getElementById('errorTitle');
+            const msg = document.getElementById('errorMsg');
+            const loader = document.getElementById('loader');
+            if (overlay && title && msg) {
+                if (loader) loader.style.display = 'none';
+                title.textContent = 'Application Error';
+                msg.textContent = (e.message || e.error?.message || 'Error initializing application.') + ' (Line: ' + (e.lineno || '?') + ')';
+                overlay.classList.remove('hidden');
+            }
+        });
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled Rejection:', e.reason);
+            const overlay = document.getElementById('errorOverlay');
+            const title = document.getElementById('errorTitle');
+            const msg = document.getElementById('errorMsg');
+            const loader = document.getElementById('loader');
+            if (overlay && title && msg) {
+                if (loader) loader.style.display = 'none';
+                title.textContent = 'Application Error';
+                msg.textContent = e.reason?.message || String(e.reason) || 'Async error occurred.';
+                overlay.classList.remove('hidden');
+            }
+        });
+    </script>
+    <!-- Load MediaPipe as ES module and expose globally for gestures.js -->
+    <script type="module">
+        window.fogMirror = {
+            getScreenSize: async () => {
+                if (window.pywebview?.api?.get_screen_size) {
+                    return await window.pywebview.api.get_screen_size();
+                }
+                return { width: window.screen.width, height: window.screen.height };
+            },
+            quit: () => {
+                if (window.pywebview?.api?.quit) {
+                    window.pywebview.api.quit();
+                } else {
+                    window.close();
+                }
+            }
+        };
+
+        try {
+            const mediapipeVision = await import('./vendor/vision_bundle.mjs');
+            window.mediapipeVision = mediapipeVision;
+        } catch (e) {
+            console.warn('Local vendor load failed, trying CDN...', e);
+            try {
+                const mediapipeVision = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.18/+esm');
+                window.mediapipeVision = mediapipeVision;
+            } catch (err) {
+                console.error('All MediaPipe loads failed:', err);
+            }
+        }
+        window.dispatchEvent(new Event('mediapipe-ready'));
+    </script>
+</head>
+<body>
+
+    <!-- ── Loading Screen ── -->
+    <div id="loader">
+        <div class="loader-ring"></div>
+        <p class="loader-title">FOG MIRROR</p>
+        <p class="loader-sub" id="loaderStatus">Starting AI vision & mirror…</p>
+    </div>
+
+    <!-- ── Error Overlay ── -->
+    <div id="errorOverlay" class="hidden">
+        <div class="error-box">
+            <div class="error-icon">⚠️</div>
+            <h2 id="errorTitle">Camera Access Denied</h2>
+            <p id="errorMsg">Please allow camera access and restart the app.</p>
+            <button onclick="window.fogMirror.quit()">Close App</button>
+        </div>
+    </div>
+
+    <!-- ── Main Mirror ── -->
+    <div id="mirrorContainer">
+        <video id="webcam" autoplay playsinline muted></video>
+        <canvas id="mainCanvas"></canvas>
+    </div>
+
+    <!-- ── HUD Overlay ── -->
+    <div id="hud">
+        <!-- Gesture Indicator (top-centre) -->
+        <div id="gestureIndicator">
+            <span id="gestureIcon">🪞</span>
+            <span id="gestureLabel">Show your hand</span>
+        </div>
+
+        <!-- Controls toolbar (bottom-centre) -->
+        <div id="controls">
+            <button class="ctrl-btn" id="btnReset" title="Reset fog">
+                💨 <span>Reset Fog</span>
+            </button>
+            <button class="ctrl-btn" id="btnMute" title="Toggle sound">
+                🔊 <span>Sound On</span>
+            </button>
+            <button class="ctrl-btn" id="btnDebug" title="Toggle debug">
+                🔍 <span>Debug</span>
+            </button>
+            <div class="ctrl-btn status-pill" id="statusPill">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Initializing…</span>
+            </div>
+        </div>
+
+        <!-- FPS counter (debug only) -->
+        <div id="fpsCounter" class="hidden">FPS: 0</div>
+
+        <!-- Quit hint -->
+        <div id="quitHint">ESC to quit</div>
+    </div>
+
+    <!-- ── Finger glow trail canvas (top layer, pointer-events:none) ── -->
+    <canvas id="glowCanvas"></canvas>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
